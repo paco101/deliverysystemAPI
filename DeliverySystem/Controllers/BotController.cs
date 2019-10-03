@@ -8,7 +8,6 @@ namespace DeliverySystem.Controllers
     [Route("api/[controller]")]
     public class BotController : ControllerBase
     {
-        [HttpGet]
         public async Task<OkResult> Update([FromBody] Update update)
         {
             var commands = Bot.Bot.Commands;

@@ -18,6 +18,7 @@ namespace DeliverySystem
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            Bot.Bot.Get();
         }
 
         public IConfiguration Configuration { get; }

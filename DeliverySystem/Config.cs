@@ -16,7 +16,6 @@ namespace DeliverySystem
                 AppConfiguration = new AppConfig();
                 string json = JsonConvert.SerializeObject(AppConfiguration, Formatting.Indented);
                 File.WriteAllText(ConfigFile,json);
-                Console.WriteLine("gg");
             }
             else
             {
