@@ -16,11 +16,9 @@ namespace DeliverySystem.Controllers
 
             foreach (var command in commands)
             {
-                if (command.Contains(message.Text))
-                {
-                    command.Execute(message, client);
-                    break;
-                }
+                if (!command.Contains(message.Text)) continue;
+                command.Execute(message, client);
+                break;
             }
             return Ok();
         }

@@ -17,7 +17,7 @@ namespace DeliverySystem.Bot
             if (_client != null)
                 return _client;
 
-            _commandsList = new List<Command> {new TestCommand()};
+            _commandsList = new List<Command> {};
 
             _client= new TelegramBotClient(Config.AppConfiguration.ApiKey);
             var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
