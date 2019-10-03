@@ -11,7 +11,15 @@ namespace DeliverySystem.Controllers
         [HttpGet]
         public async Task<OkResult> Update([FromBody] Update update)
         {
-            
+            var commands = Bot.Bot.Commands;
+            var message = update.Message;
+            var client = await Bot.Bot.Get();
+
+            foreach (var command in commands)
+            {
+                if(command.Contains(message.Text))
+                    command.Execute(message,client);
+            }
             return Ok();
         }
     }

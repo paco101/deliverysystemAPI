@@ -17,10 +17,10 @@ namespace DeliverySystem.Bot
             if (_client != null)
                 return _client;
 
-            _commandsList = new List<Command>();
-            
+            _commandsList = new List<Command> {new TestCommand()};
+
             _client= new TelegramBotClient(Config.AppConfiguration.ApiKey);
-            var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
+            var hook = string.Format(Config.AppConfiguration.Url, "api/bot/");
             await _client.SetWebhookAsync(hook);
 
             return _client;
