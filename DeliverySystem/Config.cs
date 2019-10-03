@@ -11,12 +11,11 @@ namespace DeliverySystem
 
         static Config()
         {
-            if (!File.Exists("~/"+ConfigFile))
+            if (!File.Exists(ConfigFile))
             {
                 AppConfiguration = new AppConfig();
                 string json = JsonConvert.SerializeObject(AppConfiguration, Formatting.Indented);
                 File.WriteAllText(ConfigFile,json);
-                Console.WriteLine("gg");
             }
             else
             {

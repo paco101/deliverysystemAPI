@@ -5,10 +5,9 @@ using Telegram.Bot.Types;
 namespace DeliverySystem.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public class BotController : ControllerBase
     {
-        [HttpGet]
+        [Route(@"api/bot/update")]
         public async Task<OkResult> Update([FromBody] Update update)
         {
             var commands = Bot.Bot.Commands;
@@ -17,8 +16,11 @@ namespace DeliverySystem.Controllers
 
             foreach (var command in commands)
             {
-                if(command.Contains(message.Text))
-                    command.Execute(message,client);
+                if (command.Contains(message.Text))
+                {
+                    command.Execute(message, client);
+                    break;
+                }
             }
             return Ok();
         }

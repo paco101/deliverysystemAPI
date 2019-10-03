@@ -1,6 +1,6 @@
 {
-  "Url": "https://deliverysystembotapp.azurewebsites.net:443/{0}",
-  "Name": "DeliverySystem_bot",
+  "Url": "https://deliverysystembotapp.azurewebsites.net/{0}/",
+  "Name": "@DeliverySystem_bot",
   "ApiKey": "933186075:AAEjD-l_QI6MlaujdZQKEEqQ5OS7lPSsYk4",
   "DailyRate": 0
 }
