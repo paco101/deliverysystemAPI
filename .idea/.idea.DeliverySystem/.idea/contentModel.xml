@@ -5,15 +5,30 @@
     <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_DeliverySystem.-1295335845.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="DeliverySystem" t="IncludeRecursive">
+        <e p="Bot" t="Include">
+          <e p="Bot.cs" t="Include" />
+          <e p="Commands" t="Include">
+            <e p="Command.cs" t="Include" />
+            <e p="TestCommand.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Config.cs" t="Include" />
         <e p="Controllers" t="Include">
+          <e p="BotController.cs" t="Include" />
+          <e p="SettingsController.cs" t="Include" />
           <e p="ValuesController.cs" t="Include" />
         </e>
         <e p="DeliverySystem.csproj" t="IncludeRecursive" />
+        <e p="Models" t="Include">
+          <e p="CourierModels.cs" t="Include" />
+          <e p="DeliveryModels.cs" t="Include" />
+        </e>
         <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
         </e>
         <e p="Startup.cs" t="Include" />
+        <e p="appconfiguration.json" t="Include" />
         <e p="appsettings.Development.json" t="Include" />
         <e p="appsettings.json" t="Include" />
         <e p="bin" t="ExcludeRecursive" />
