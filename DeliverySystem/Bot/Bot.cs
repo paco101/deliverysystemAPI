@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DeliverySystem.Bot.Commands;
@@ -9,22 +10,25 @@ namespace DeliverySystem.Bot
     {
         private static TelegramBotClient _client;
         private static List<Command> _commandsList;
-        
+
         public static IReadOnlyList<Command> Commands => _commandsList.AsReadOnly();
 
-        public static async Task<TelegramBotClient> Get()
+        public static async Task<TelegramBotClient> Initialize()
+        {
+            _commandsList = new List<Command> {new StartCommand(),new WorkCommand() };
+
+            _client = new TelegramBotClient(Config.AppConfiguration.ApiKey);
+            var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
+            await _client.SetWebhookAsync(hook);
+            return _client;
+        }
+
+        public static async Task<TelegramBotClient> GetClient()
         {
             if (_client != null)
                 return _client;
-
-            _commandsList = new List<Command> {};
-
-            _client= new TelegramBotClient(Config.AppConfiguration.ApiKey);
-            var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
-            await _client.SetWebhookAsync(hook);
-
+            await Initialize();
             return _client;
         }
-        
     }
 }

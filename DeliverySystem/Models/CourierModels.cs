@@ -11,6 +11,8 @@ namespace DeliverySystem.Models
 
         [Required] public int Capacity { get; set; }
 
+        [Required] public string TelegramUsrName { get; set; }
+
         [Required]
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }

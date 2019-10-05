@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
+    <e p="$APPLICATION_CONFIG_DIR$/consoles/db" t="IncludeRecursive" />
+    <e p="$APPLICATION_CONFIG_DIR$/extensions" t="IncludeRecursive" />
     <e p="$USER_HOME$/.Rider2019.2/system/extResources" t="IncludeRecursive" />
     <e p="$USER_HOME$/.Rider2019.2/system/resharper-host/local/Transient/ReSharperHost/v192/SolutionCaches/_DeliverySystem.-1295335845.00" t="ExcludeRecursive" />
     <e p="$PROJECT_DIR$" t="IncludeFlat">
@@ -9,6 +11,8 @@
           <e p="Bot.cs" t="Include" />
           <e p="Commands" t="Include">
             <e p="Command.cs" t="Include" />
+            <e p="StartCommand.cs" t="Include" />
+            <e p="WorkCommand.cs" t="Include" />
           </e>
         </e>
         <e p="Config.cs" t="Include" />
@@ -18,6 +22,7 @@
         </e>
         <e p="DeliverySystem.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
+          <e p="ApiDbContext.cs" t="Include" />
           <e p="CourierModels.cs" t="Include" />
           <e p="DeliveryModels.cs" t="Include" />
         </e>
