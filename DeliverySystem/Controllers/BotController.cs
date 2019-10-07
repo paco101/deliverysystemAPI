@@ -18,12 +18,12 @@ namespace DeliverySystem.Controllers
         }
 
         [Route(@"api/bot/update")]
-        public async Task<OkResult> Update([FromBody] Update update)
+        public async Task<OkResult> Update([FromBody] Update update) // Handling bot updates
         {
             var message = update.Message;
             var courier = _dbContext.Couriers.FirstOrDefault(c => c.TelegramUsrName == message.From.Username);
             var client = await Bot.Bot.GetClient();
-            if (courier == null)
+            if (courier == null) // Check registration(is he courier)
             {
                 await client.SendTextMessageAsync(message.Chat.Id,
                     "Sorry u're not registed. More info at https://github.com/RNRNRNR/deliverysystemAPI");
@@ -31,7 +31,7 @@ namespace DeliverySystem.Controllers
             }
 
             var commands = Bot.Bot.Commands;
-
+            // Identify command
             foreach (var command in commands)
             {
                 if (message.Text.Contains(command.Name))

@@ -1,13 +1,17 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DeliverySystem.Models
 {
     public class DeliveryOrder
     {
         [Key] public int Id { get; set; }
+        
+         public bool IsDelivered => false;
 
         [ForeignKey("StockId")] public Stock Stock { get; set; }
 
@@ -25,6 +29,8 @@ namespace DeliverySystem.Models
         [DataType(DataType.DateTime)] public DateTime DateTime { get; set; }
 
         [DataType(DataType.MultilineText)] public string AdditionComments { get; set; }
+        
+        
     }
 
     public class Stock

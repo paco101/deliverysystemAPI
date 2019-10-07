@@ -22,10 +22,6 @@ namespace DeliverySystem.Controllers
         public ActionResult<IEnumerable<string>> Get()
         {
 
-            if (DateTime.Now.TimeOfDay > Config.AppConfiguration.EndWorkTime ||
-                DateTime.Now.TimeOfDay < Config.AppConfiguration.StartWorkTime)
-                return new string[]{DateTime.Now.TimeOfDay.ToString(),"kek"};
-            
             return new string[] {DateTime.Now.TimeOfDay.ToString(), Config.AppConfiguration.StartWorkTime.ToString()};
         }
 

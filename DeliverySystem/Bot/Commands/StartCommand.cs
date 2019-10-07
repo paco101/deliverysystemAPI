@@ -10,7 +10,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 
 namespace DeliverySystem.Bot.Commands
 {
-    public class StartCommand : Command
+    public class StartCommand : Command // Start Up command
     {
         public override string Name => "/start";
 
