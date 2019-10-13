@@ -14,25 +14,33 @@ namespace DeliverySystem.Bot
     public static class Bot
     {
         private static TelegramBotClient _client;
-        private static List<Command> _commandsList;
+        
 
-        public static IReadOnlyList<Command> Commands => _commandsList.AsReadOnly();
-
-        public static async Task<TelegramBotClient> Initialize()
+        public static async Task<TelegramBotClient> Initialize(ApiDbContext dbContext=null)
         {
-            _commandsList = new List<Command> {new StartCommand(), new WorkCommand()};
-
             _client = new TelegramBotClient(Config.AppConfiguration.ApiKey);
             var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
             await _client.SetWebhookAsync(hook);
+
+            _client.OnCallbackQuery += async (sender, args) =>
+            {
+                switch (args.CallbackQuery.Data)
+                {
+                    case "WorkYesCallback":
+
+                        var work = new WorkCommand();
+                        await work.StartWork(_client, args.CallbackQuery, dbContext);
+                        break;
+                    case "DefaultNoCallback":
+                        await _client.SendTextMessageAsync(args.CallbackQuery.Message.Chat.Id, "Ok,lol");
+                        break;
+                }
+            };
             return _client;
         }
 
-        public static async Task<TelegramBotClient> GetClient()
+        public static  TelegramBotClient GetClient()
         {
-            if (_client != null)
-                return _client;
-            await Initialize();
             return _client;
         }
     }

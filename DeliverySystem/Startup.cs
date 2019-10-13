@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DeliverySystem.Bot.Commands;
 using DeliverySystem.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +21,8 @@ namespace DeliverySystem
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Bot.Bot.Initialize();
+            
+            
         }
 
         public IConfiguration Configuration { get; }
@@ -30,7 +32,7 @@ namespace DeliverySystem
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApiDbContext>(options => options.UseSqlServer(connection));
-            
+            services.AddTransient<WorkCommand>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             
         }
@@ -50,6 +52,7 @@ namespace DeliverySystem
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            Bot.Bot.Initialize(app.ApplicationServices.GetService<ApiDbContext>());
         }
     }
 }

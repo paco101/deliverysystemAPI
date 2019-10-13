@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using DeliverySystem.Bot.Commands;
@@ -23,7 +24,7 @@ namespace DeliverySystem.Controllers
         {
             var message = update.Message;
             var courier = _dbContext.Couriers.FirstOrDefault(c => c.TelegramUsrName == message.From.Username);
-            var client = await Bot.Bot.GetClient();
+            var client = Bot.Bot.GetClient();
             if (courier == null) // Check registration(is he courier)
             {
                 await client.SendTextMessageAsync(message.Chat.Id,
@@ -31,22 +32,26 @@ namespace DeliverySystem.Controllers
                 return Ok();
             }
 
-            if (courier.Status==3)
+            switch (courier.Status)
             {
-                var confirm = new ConfirmCommand();
+                case 3:
+                    var confirm = new ConfirmCommand();
+                    if (message.Text.Contains(confirm.Name))
+                        confirm.Execute(message, client, _dbContext);
+                    else
+                        await client.SendTextMessageAsync(message.Chat.Id, "To confirm delivery type /confirmdelivery");
+
+                    break;
+                case 1:
+                    var work = new WorkCommand();
+                    if (message.Text.Contains(work.Name))
+                        work.Execute(message, client, _dbContext);
+                    break;
+                case 2:
+                    await client.SendTextMessageAsync(message.Chat.Id, "Receive ur packages");
+                    break;
             }
 
-            var commands = Bot.Bot.Commands;
-            // Identify command
-            foreach (var command in commands)
-            {
-                if (message.Text.Contains(command.Name))
-                {
-                    command.Execute(message, client);
-                    break;
-                }
-            }
-            
             return Ok();
         }
     }

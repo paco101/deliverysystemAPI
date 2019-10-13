@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "status": 1,
+    "stock": null,
+    "stockId": 1,
+    "clientFullName": "Kolya",
+    "clientPhoneNumber": "3105811",
+    "latitude": 50.432571,
+    "longitude": 30.458014,
+    "dateTime": "2019-10-13T18:14:22",
+    "additionComments": "Kek",
+    "activeCourierDelivery": null
+  }
+]

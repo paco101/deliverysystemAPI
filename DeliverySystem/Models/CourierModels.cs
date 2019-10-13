@@ -20,13 +20,13 @@ namespace DeliverySystem.Models
         [Required] public string FullName { get; set; }
 
         [DefaultValue(1), Range(1, 3)]
-        public int Status { get; set; } // 0 - not working, 1 - receives packages, 2 - delivering
+        public int? Status { get; set; } // 1 - not working, 2 - receives packages, 3 - delivering
 
         [Required] public int Capacity { get; set; }
 
         [Required] public string TelegramUsrName { get; set; }
 
-        public long TelegramChatId { get; set; }
+        public long? TelegramChatId { get; set; }
 
         [Required]
         [DataType(DataType.PhoneNumber)]

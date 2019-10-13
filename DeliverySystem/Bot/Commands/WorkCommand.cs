@@ -5,8 +5,10 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using DeliverySystem.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.Extensions.DependencyInjection;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -17,6 +19,7 @@ namespace DeliverySystem.Bot.Commands
     public class WorkCommand : Command
     {
         public override string Name => "/work";
+        
 
         public override async void Execute(Message message, TelegramBotClient client, ApiDbContext dbContext = null)
         {
@@ -45,12 +48,12 @@ namespace DeliverySystem.Bot.Commands
             //We calling main method by event
         }
 
-        public static async Task StartWork(ApiDbContext dbContext, TelegramBotClient client,
-            Message message) // Main method which outputs user, list of deliveries
+        public async Task StartWork(TelegramBotClient client,
+            CallbackQuery callbackQuery,[FromServices]ApiDbContext dbContext) // Main method which outputs user, list of deliveries
         {
-            await client.SendTextMessageAsync(message.Chat.Id, "Wait few second, i'm choosing the orders for u");
+            await client.SendTextMessageAsync(callbackQuery.Message.Chat.Id, "Wait few seconds, i'm choosing the orders for u");
 
-            var courier = dbContext.Couriers.FirstOrDefaultAsync(c => c.TelegramUsrName == message.From.Username)
+            var courier = dbContext.Couriers.FirstOrDefaultAsync(c => c.TelegramUsrName == callbackQuery.From.Username)
                 .Result;
 
             var allDeliveryOrders = dbContext.DeliveryOrders.Where(c =>
@@ -104,7 +107,7 @@ namespace DeliverySystem.Bot.Commands
 
             var activeDeliveries = new List<ActiveCourierDelivery>();
 
-            await client.SendTextMessageAsync(message.Chat.Id, "Get packages");
+            await client.SendTextMessageAsync(callbackQuery.Message.Chat.Id, "Get packages");
             // Convert to active deliveries
             for (int i = 0; i < route.Count; i++)
 
@@ -125,7 +128,7 @@ namespace DeliverySystem.Bot.Commands
 
             await dbContext.SaveChangesAsync();
 
-            var client = await Bot.GetClient();
+            var client = Bot.GetClient();
 
             await client.SendTextMessageAsync(courier.TelegramChatId,
                 "U're receive packages. </br>" +$"Delivery:{activeorder.Id} </br>"+

@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "stockId": 1,
+    "stock": null,
+    "fullName": "Sasha",
+    "status": null,
+    "capacity": 4,
+    "telegramUsrName": "@contracc",
+    "telegramChatId": null,
+    "phoneNumber": "38051234123"
+  }
+]
