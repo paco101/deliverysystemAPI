@@ -17,7 +17,9 @@ namespace DeliverySystem.Bot.Commands
         public override string Name => "/confirmdelivery";
 
 
-        public override void Execute(Message message, TelegramBotClient client, ApiDbContext dbContext) // Confirm current order and gives next
+        public override void
+            Execute(Message message, TelegramBotClient client,
+                ApiDbContext dbContext) // Confirm current order and gives next
         {
             var courier = dbContext.Couriers.FirstOrDefault(c => c.TelegramUsrName == message.From.Username);
             var order = dbContext.ActiveCourierDeliveries.FirstOrDefault(c =>
@@ -30,18 +32,18 @@ namespace DeliverySystem.Bot.Commands
             var newOrder = dbContext.ActiveCourierDeliveries.FirstOrDefault(c =>
                 c.Courier.Id == courier.Id);
 
-            if (newOrder == null)// check end of work
+            if (newOrder == null) // check end of work
             {
                 client.SendTextMessageAsync(courier.TelegramChatId, "Work is finished to start new work type /work");
                 courier.Status = 1;
-                
+
                 return;
             }
 
             dbContext.SaveChanges();
-            
+
             client.SendTextMessageAsync(courier.TelegramChatId,
-                $"Delivery :{order.DeliveryOrderId} </br>" +
+                $"Delivery :{order.DeliveryOrderId}, Client Phonenumber: {order.DeliveryOrder.ClientPhoneNumber.ToString()} </br>" +
                 $"<a src='http://www.google.com/maps/place/{order.DeliveryOrder.Latitude},{order.DeliveryOrder.Longitude}'>Your destination<a> ",
                 ParseMode.Html);
             //send courier next order

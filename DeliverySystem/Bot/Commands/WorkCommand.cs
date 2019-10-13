@@ -51,6 +51,7 @@ namespace DeliverySystem.Bot.Commands
             var result = Enumerable.Range(0, deliveriesCount).Select(c => allDeliveryOrders.ElementAt(c)).ToList();
 
             var route = new List<DeliveryOrder>();
+            
             // Find optimal route between stock and first delivery destination
             var minDistance = GetDistance(courier.Stock.Latitude, courier.Stock.Longitude,
                 result[0].Latitude, result[0].Longitude);
@@ -119,7 +120,7 @@ namespace DeliverySystem.Bot.Commands
             var client = Bot.GetClient();
 
             await client.SendTextMessageAsync(courier.TelegramChatId,
-                "U're receive packages. </br>" +$"Delivery:{activeorder.Id} </br>"+
+                "U're receive packages. </br>" +$"Delivery:{activeorder.Id}, Client Phonenumber: {activeorder.DeliveryOrder.ClientPhoneNumber.ToString() } </br>"+
                 $"<a src='http://www.google.com/maps/place/{activeorder.DeliveryOrder.Latitude},{activeorder.DeliveryOrder.Longitude}'>Your destination<a> ",
                 ParseMode.Html);
         }
