@@ -15,27 +15,11 @@ namespace DeliverySystem.Bot
     {
         private static TelegramBotClient _client;
         
-
-        public static async Task<TelegramBotClient> Initialize(ApiDbContext dbContext=null)
+        public static async Task<TelegramBotClient> Initialize()
         {
             _client = new TelegramBotClient(Config.AppConfiguration.ApiKey);
             var hook = string.Format(Config.AppConfiguration.Url, "api/bot/update");
             await _client.SetWebhookAsync(hook);
-
-            _client.OnCallbackQuery += async (sender, args) =>
-            {
-                switch (args.CallbackQuery.Data)
-                {
-                    case "WorkYesCallback":
-
-                        var work = new WorkCommand();
-                        await work.StartWork(_client, args.CallbackQuery, dbContext);
-                        break;
-                    case "DefaultNoCallback":
-                        await _client.SendTextMessageAsync(args.CallbackQuery.Message.Chat.Id, "Ok,lol");
-                        break;
-                }
-            };
             return _client;
         }
 

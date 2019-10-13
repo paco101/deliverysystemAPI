@@ -22,7 +22,8 @@ namespace DeliverySystem
         {
             Configuration = configuration;
             
-            
+            Bot.Bot.Initialize();
+
         }
 
         public IConfiguration Configuration { get; }
@@ -30,11 +31,11 @@ namespace DeliverySystem
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<WorkCommand>();
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApiDbContext>(options => options.UseSqlServer(connection));
-            services.AddTransient<WorkCommand>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,8 +52,7 @@ namespace DeliverySystem
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
-            Bot.Bot.Initialize(app.ApplicationServices.GetService<ApiDbContext>());
+            app.UseMvc(); 
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using DeliverySystem.Models;
@@ -16,6 +17,11 @@ namespace DeliverySystem.Bot.Commands
 
         public override async void Execute(Message message, TelegramBotClient client,ApiDbContext dbContext=null)
         {
+            var courier = dbContext.Couriers.FirstOrDefault(c => c.TelegramUsrName == message.From.Username);
+            courier.Status = 1;
+            courier.TelegramChatId = message.Chat.Id;
+            await dbContext.SaveChangesAsync();
+            
             var  keyboard = new ReplyKeyboardMarkup(new KeyboardButton[]
             {new KeyboardButton("/work"),
             }, oneTimeKeyboard: true);

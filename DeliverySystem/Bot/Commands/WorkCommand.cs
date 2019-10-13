@@ -19,9 +19,8 @@ namespace DeliverySystem.Bot.Commands
     public class WorkCommand : Command
     {
         public override string Name => "/work";
-        
 
-        public override async void Execute(Message message, TelegramBotClient client, ApiDbContext dbContext = null)
+        public override async void Execute(Message message, TelegramBotClient client, ApiDbContext dbContext)
         {
             var startWorkTime = Config.AppConfiguration.StartWorkTime;
             var endWorkTime = Config.AppConfiguration.EndWorkTime;
@@ -36,37 +35,23 @@ namespace DeliverySystem.Bot.Commands
                 return;
             }
 
-            await client.SendTextMessageAsync(message.Chat.Id, "Are u sure?",
-                replyMarkup: new InlineKeyboardMarkup(new[]
-                {
-                    new[]
-                    {
-                        InlineKeyboardButton.WithCallbackData("Yes", "WorkYesCallback"),
-                        InlineKeyboardButton.WithCallbackData("No", "DefaultNoCallback"),
-                    }
-                }));
-            //We calling main method by event
-        }
+            await client.SendTextMessageAsync(message.Chat.Id, "Wait few seconds, i'm choosing the orders for u");
 
-        public async Task StartWork(TelegramBotClient client,
-            CallbackQuery callbackQuery,[FromServices]ApiDbContext dbContext) // Main method which outputs user, list of deliveries
-        {
-            await client.SendTextMessageAsync(callbackQuery.Message.Chat.Id, "Wait few seconds, i'm choosing the orders for u");
-
-            var courier = dbContext.Couriers.FirstOrDefaultAsync(c => c.TelegramUsrName == callbackQuery.From.Username)
+            var courier = dbContext.Couriers.FirstOrDefaultAsync(c => c.TelegramUsrName == message.From.Username)
                 .Result;
 
             var allDeliveryOrders = dbContext.DeliveryOrders.Where(c =>
-                c.Status==2 && c.DateTime.Date == DateTime.Today && c.StockId == courier.StockId);
+                c.Status==1 && c.DateTime.Date == DateTime.Today && c.StockId == courier.StockId);
 
             var deliveriesCount = (courier.Capacity < allDeliveryOrders.Count())
                 ? courier.Capacity
                 : allDeliveryOrders.Count();
+            await client.SendTextMessageAsync(message.Chat.Id, deliveriesCount.ToString());
 
             var result = Enumerable.Range(0, deliveriesCount).Select(c => allDeliveryOrders.ElementAt(c)).ToList();
 
             var route = new List<DeliveryOrder>();
-            // Find optimal route between stock and delivery destination
+            // Find optimal route between stock and first delivery destination
             var minDistance = GetDistance(courier.Stock.Latitude, courier.Stock.Longitude,
                 result[0].Latitude, result[0].Longitude);
             int minIndex = 0;
@@ -103,11 +88,12 @@ namespace DeliverySystem.Bot.Commands
                 
                 route.Add(result[minIndex]);
                 result.RemoveAt(minIndex);
+                
             }
 
             var activeDeliveries = new List<ActiveCourierDelivery>();
 
-            await client.SendTextMessageAsync(callbackQuery.Message.Chat.Id, "Get packages");
+            await client.SendTextMessageAsync(message.Chat.Id, "Get packages");
             // Convert to active deliveries
             for (int i = 0; i < route.Count; i++)
 
@@ -117,6 +103,8 @@ namespace DeliverySystem.Bot.Commands
 
             await dbContext.ActiveCourierDeliveries.AddRangeAsync(activeDeliveries);
             await dbContext.SaveChangesAsync();
+
+
         }
         
         public static async Task AcceptPackageReceiving(ApiDbContext dbContext, int courierId)

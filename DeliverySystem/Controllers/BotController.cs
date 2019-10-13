@@ -50,6 +50,11 @@ namespace DeliverySystem.Controllers
                 case 2:
                     await client.SendTextMessageAsync(message.Chat.Id, "Receive ur packages");
                     break;
+                case null:
+                    var start = new StartCommand();
+                    if (message.Text.Contains(start.Name))
+                        start.Execute(message, client, _dbContext);
+                    break;
             }
 
             return Ok();
