@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using DeliverySystem.Bot.Commands;
 using DeliverySystem.Models;
 using Microsoft.AspNetCore.Mvc;
 using Telegram.Bot.Types;
@@ -28,6 +29,11 @@ namespace DeliverySystem.Controllers
                 await client.SendTextMessageAsync(message.Chat.Id,
                     "Sorry u're not registed. More info at https://github.com/RNRNRNR/deliverysystemAPI");
                 return Ok();
+            }
+
+            if (courier.Status==3)
+            {
+                var confirm = new ConfirmCommand();
             }
 
             var commands = Bot.Bot.Commands;

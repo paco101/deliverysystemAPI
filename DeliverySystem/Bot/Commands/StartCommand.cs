@@ -14,7 +14,7 @@ namespace DeliverySystem.Bot.Commands
     {
         public override string Name => "/start";
 
-        public override async void Execute(Message message, TelegramBotClient client)
+        public override async void Execute(Message message, TelegramBotClient client,ApiDbContext dbContext=null)
         {
             var  keyboard = new ReplyKeyboardMarkup(new KeyboardButton[]
             {new KeyboardButton("/work"),
